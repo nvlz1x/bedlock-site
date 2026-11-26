@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bedlock に招待されています</title>
+  <meta name="description" content="Bedlock で夜ふかしを見張ってください。このページから Bedlock を開くと、そのまま友達になれます。">
+  <meta property="og:title" content="Bedlock に招待されています">
+  <meta property="og:description" content="開くと、そのまま友達になれます。">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .invite { text-align: center; margin-top: 56px; }
+    .invite h1 { font-size: clamp(26px, 6vw, 34px); margin: 0 0 12px; }
+    .invite .lead { margin-bottom: 26px; }
+    .open {
+      display: inline-block;
+      padding: 14px 30px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #080a12;
+      font-weight: 800;
+      font-size: 17px;
+    }
+    .open:hover { text-decoration: none; opacity: 0.9; }
+    .code-box {
+      margin: 34px auto 0;
+      max-width: 420px;
+      padding: 18px 20px;
+      border-radius: 20px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+    }
+    .code {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin: 6px 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .small { color: var(--text-3); font-size: 13px; margin: 0; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../">Bedlock</a>
+  </header>
+
+  <main>
+    <section class="invite">
+      <h1>Bedlock に招待されています</h1>
+      <p class="lead">ボタンを押して Bedlock を開くと、そのまま友達になれます。</p>
+      <a class="open" id="open" href="#">Bedlock で開く</a>
+
+      <div class="code-box" id="code-box" hidden>
+        <p class="small">開けないときは、アプリの「友達」タブの + から入力してください</p>
+        <p class="code" id="code"></p>
+        <p class="small">24時間有効</p>
+      </div>
+
+      <p class="small" style="margin-top:28px">Bedlock がまだ入っていない場合は、入れてからもう一度このリンクを開いてください。</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a href="../">Bedlock</a>
+    <span>·</span>
+    <a href="../privacy.html">プライバシーポリシー</a>
+  </footer>
+
+  <script>
+    // ?c=ABC123 の招待コードで、アプリの bedlock://invite/ABC123 を開く
+    (function () {
+      var raw = new URLSearchParams(location.search).get('c') || '';
+      var code = raw.trim().toUpperCase();
+      var valid = /^[A-HJ-NP-Z2-9]{6}$/.test(code);
+      var button = document.getElementById('open');
+      if (!valid) {
+        button.textContent = '招待コードが正しくありません';
+        button.removeAttribute('href');
+        return;
+      }
+      var appUrl = 'bedlock://invite/' + code;
+      button.href = appUrl;
+      document.getElementById('code').textContent = code;
+      document.getElementById('code-box').hidden = false;
+      // ページを開いた時点で、アプリを開こうとする（入っていなければ何も起きない）
+      location.href = appUrl;
+    })();
+  </script>
+</body>
+</html>
